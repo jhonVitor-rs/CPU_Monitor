@@ -16,7 +16,7 @@ func InfoStat() (*host.InfoStat, error) {
 	return stat, nil
 }
 
-func TemperaturesStat() ([]host.TemperatureStat, error) {
+func TemperatureStat() ([]host.TemperatureStat, error) {
 	stat, err := host.SensorsTemperatures()
 	if err != nil {
 		fmt.Printf("Erro ao obter o status da temperatura da CPU")
