@@ -23,14 +23,21 @@ func main() {
 
 	process := components.Process()
 
-	temp := components.NewSparkline("Temperature", ui.ColorCyan, ui.ColorCyan)
-	tempStat := components.NewSparklineGroup("Temperature Status", temp)
+	temp := components.NewSparkline()
+	tempStat := components.NewSparklineGroup("Temperature", temp)
+
+	cpuUsage := components.CpuUsage()
+
+	memoryUsage := components.MemoryMonitor()
 
 	//Processos em execução
 	processData := make([]string, 0, 50)
 
 	//Criação do monitor de temperatura
 	tempData := make([]float64, 0, 50)
+
+	//Criação do monitor de uso da cpu
+	cpuData := make([]float64, 0, 40)
 
 	draw := func(count int) {
 		//Preenchimento da lista de processos
@@ -50,10 +57,55 @@ func main() {
 		if len(tempData) > 50 {
 			tempData = tempData[len(tempData)-50:]
 		}
+
+		currentTemp := tempData[len(tempData)-1]
+		if currentTemp >= 70 {
+			temp.LineColor = ui.ColorRed
+			temp.TitleStyle.Fg = ui.ColorRed
+			tempStat.BorderStyle.Fg = ui.ColorRed
+		} else if currentTemp >= 60 {
+			temp.LineColor = ui.ColorYellow
+			temp.TitleStyle.Fg = ui.ColorYellow
+			tempStat.BorderStyle.Fg = ui.ColorYellow
+		} else {
+			temp.LineColor = ui.ColorCyan
+			temp.TitleStyle.Fg = ui.ColorCyan
+			tempStat.BorderStyle.Fg = ui.ColorCyan
+		}
+
+		temp.Title = fmt.Sprintf("%.2f", currentTemp)
 		temp.Data = tempData
 
+		//Preenchimento do uso da CPU
+		percent, _ := services.PercentUsedCpu()
+		cpuData = append(cpuData, percent...)
+		if len(cpuData) > 40 {
+			cpuData = cpuData[len(cpuData)-40:]
+		}
+
+		cpuUsage.Data[0] = cpuData
+
+		//Uso da memória
+		memoryData, _ := services.InfoMemory()
+		currentMemoryPercent := memoryData.UsedPercent
+		memoryUsage.Percent = int(currentMemoryPercent)
+
+		if currentMemoryPercent > 95 {
+			memoryUsage.BarColor = ui.ColorRed
+			memoryUsage.BorderStyle.Fg = ui.ColorRed
+			memoryUsage.TitleStyle.Fg = ui.ColorRed
+		} else if currentMemoryPercent > 80 {
+			memoryUsage.BarColor = ui.ColorYellow
+			memoryUsage.BorderStyle.Fg = ui.ColorYellow
+			memoryUsage.TitleStyle.Fg = ui.ColorYellow
+		} else {
+			memoryUsage.BarColor = ui.ColorGreen
+			memoryUsage.BorderStyle.Fg = ui.ColorGreen
+			memoryUsage.TitleStyle.Fg = ui.ColorGreen
+		}
+
 		ui.Clear()
-		ui.Render(header, infoHost, process, tempStat)
+		ui.Render(header, infoHost, process, tempStat, cpuUsage, memoryUsage)
 	}
 
 	tickerCount := 1

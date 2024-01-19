@@ -10,6 +10,7 @@ func Process() *widgets.List {
 	l.Title = "Process"
 	l.SetRect(0, 10, 35, 20)
 	l.TextStyle.Fg = ui.ColorYellow
+	l.BorderStyle.Fg = ui.ColorYellow
 
 	return l
 }

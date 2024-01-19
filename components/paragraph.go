@@ -13,10 +13,11 @@ func Header() *widgets.Paragraph {
 	p := widgets.NewParagraph()
 	p.Title = "PRESS q TO QUIT"
 	p.SetRect(0, 0, 80, 3)
-	p.TextStyle.Fg = ui.ColorWhite
-	p.BorderStyle.Fg = ui.ColorCyan
+	p.TextStyle.Fg = ui.ColorBlue
+	p.TitleStyle.Fg = ui.ColorRed
+	p.BorderStyle.Fg = ui.ColorBlue
 
-	text := "Welcome to CPU Monitor"
+	text := "Welcome to CPU Monitor!!!"
 	// Calcula o deslocamento para centralizar o texto
 	offsetX := (p.Inner.Dx() - len(text)) / 2
 	textCenter := strings.Repeat(" ", offsetX) + text
@@ -30,8 +31,8 @@ func InfoHost() *widgets.Paragraph {
 	p := widgets.NewParagraph()
 	p.Title = "Host Information"
 	p.SetRect(0, 3, 35, 10)
-	p.TextStyle.Fg = ui.ColorWhite
-	p.BorderStyle.Fg = ui.ColorCyan
+	p.TextStyle.Fg = ui.ColorGreen
+	p.BorderStyle.Fg = ui.ColorGreen
 
 	//Busca das informações
 	infoStat, err := services.InfoStat()
