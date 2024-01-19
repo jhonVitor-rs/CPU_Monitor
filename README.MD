@@ -1,6 +1,6 @@
 # Welcome to CPU Monitor
 
-Para rodar o programa basta baixalo, voce pode fazer isto a partir do link do github, basta abrir o terminal e digitar o comando:
+Para rodar o programa certifique de ter o go instalado em sua maquina, voce pode fazer isto atraves do site oficial da linguagem: https://go.dev/doc/install. Apos isto basta baixar o codigo, voce pode fazer isto a partir do link do github, basta abrir o terminal e digitar o comando:
 ```sh
   git clone https://github.com/jhonVitor-rs/CPU_Monitor.git
 ```
